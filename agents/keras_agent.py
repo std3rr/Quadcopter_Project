@@ -1,7 +1,7 @@
 import random
 from collections import namedtuple, deque
 
-from keras import layers, models, optimizers
+from keras import layers, models, optimizers, regularizers
 from keras import backend as K
 
 import numpy as np
@@ -67,11 +67,11 @@ class Actor:
         states = layers.Input(shape=(self.state_size,), name='states')
 
         # Add hidden layers
-        net = layers.Dense(units=32, activation='relu')(states)
+        net = layers.Dense(units=32, activation='relu', kernel_regularizer=regularizers.l2(0.01), activity_regularizer=regularizers.l2(0.01))(states)
         net = layers.BatchNormalization()(net)
-        net = layers.Dense(units=64, activation='relu')(net)
+        net = layers.Dense(units=64, activation='relu', kernel_regularizer=regularizers.l2(0.01), activity_regularizer=regularizers.l2(0.01))(net)
         net = layers.BatchNormalization()(net)
-        net = layers.Dense(units=32, activation='relu')(net)
+        net = layers.Dense(units=32, activation='relu', kernel_regularizer=regularizers.l2(0.01), activity_regularizer=regularizers.l2(0.01))(net)
 
         # Try different layer sizes, activations, add batch normalization, regularizers, etc.
 
